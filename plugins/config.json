@@ -1,0 +1,9 @@
+{
+	"dependencies": {
+		"xiaya/tools": {
+			"requireName": "xiaya/tools",
+			"name": "xiaya/tools",
+			"url": "local"
+		}
+	}
+}
