@@ -1,18 +1,18 @@
 <template>
   <div class="app">
-    <web-view class="webview" :url="url"> </web-view>
+    <web-view ref="web" class="webview" :url="url"> </web-view>
   </div>
 </template>
 
 
 <script>
 const eeui = app.requireModule("eeui");
-// const tools = app.requireModule("xiaya/tools");
+const navigationBar = app.requireModule('navigationBar');
 
 export default {
   data() {
     return {
-      url: "http://192.168.3.31:8080/#/musicList",
+      url: "http://192.168.3.31:8080/",
     };
   },
 
@@ -41,17 +41,22 @@ export default {
   },
 
   mounted() {
-    // tools.getFileList([".MFLAC"], (obj) => {
-    //   console.log(obj)
-    // });
-  }
+    //   navigationBar.hide();
+  },
+  methods: {},
 };
 </script>
 <style scoped>
 .app {
   flex: 1;
+  background: green;
 }
 .webview {
   flex: 1;
+}
+.navbar {
+  width: 750px;
+  height: 100px;
+  background-color: #ff5001;
 }
 </style>

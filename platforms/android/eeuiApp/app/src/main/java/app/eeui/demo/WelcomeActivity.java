@@ -84,7 +84,7 @@ public class WelcomeActivity extends AppCompatActivity {
             mPageBean.setSwipeBack(eeuiParse.parseBool(eeuiBase.config.getHomeParams("swipeBack", "true")));
             mPageBean.setSwipeFullBack(eeuiParse.parseBool(eeuiBase.config.getHomeParams("swipeFullBack", "false")));
             mPageBean.setSwipeColorBack(eeuiParse.parseBool(eeuiBase.config.getHomeParams("swipeColorBack", "true")));
-            mPageBean.setStatusBarType(eeuiBase.config.getHomeParams("statusBarType", "normal"));
+            mPageBean.setStatusBarType(eeuiBase.config.getHomeParams("statusBarType", "immersion"));
             mPageBean.setStatusBarColor(eeuiBase.config.getHomeParams("statusBarColor", "#3EB4FF"));
             mPageBean.setStatusBarAlpha(eeuiParse.parseInt(eeuiBase.config.getHomeParams("statusBarAlpha", "0")));
             String statusBarStyle = eeuiBase.config.getHomeParams("statusBarStyle", null);

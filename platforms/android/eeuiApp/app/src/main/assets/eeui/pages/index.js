@@ -156,12 +156,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-var eeui = app.requireModule("eeui"); // const tools = app.requireModule("xiayaTools");
-
+var eeui = app.requireModule("eeui");
+var navigationBar = app.requireModule('navigationBar');
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      url: "http://192.168.3.31:8080/#/musicList"
+      url: "http://192.168.3.31:8080/"
     };
   },
   appActive: function appActive(data) {//APP进入前台：App从【后台】切换至【前台】时触发
@@ -176,10 +176,9 @@ var eeui = app.requireModule("eeui"); // const tools = app.requireModule("xiayaT
   },
   pageDestroy: function pageDestroy(data) {//页面停止：页面【销毁】时触发
   },
-  mounted: function mounted() {// tools.getFileList([".MFLAC"], (obj) => {
-    //   eeuiLog.log(obj)
-    // });
-  }
+  mounted: function mounted() {//   navigationBar.hide();
+  },
+  methods: {}
 });
 
 /***/ }),
@@ -193,10 +192,16 @@ var eeui = app.requireModule("eeui"); // const tools = app.requireModule("xiayaT
 
 module.exports = {
   "app": {
-    "flex": 1
+    "flex": 1,
+    "background": "green"
   },
   "webview": {
     "flex": 1
+  },
+  "navbar": {
+    "width": "750",
+    "height": "100",
+    "backgroundColor": "#ff5001"
   }
 }
 
@@ -213,6 +218,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: ["app"]
   }, [_c('web-view', {
+    ref: "web",
     staticClass: ["webview"],
     attrs: {
       "url": _vm.url
