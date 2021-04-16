@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSONArray;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,10 +40,12 @@ public class xiayaToolsWebModule {
      * @return
      */
     public static Map getFileDataUrl(ExtendWebView webView, String filePath) {
-        String dataUrl = fileTools.fileToBase64(filePath);
+//        String dataUrl = fileTools.fileToBase64(filePath);
+        String newUrl = filePath.replace("file://","");
+        File file = new File(newUrl);
         Map<String, Object> fileData = new HashMap<>();
         fileData.put("fileName",filePath);
-        fileData.put("path",dataUrl);
+        fileData.put("path",file.getPath());
         return fileData;
     }
 }

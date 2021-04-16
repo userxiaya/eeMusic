@@ -161,7 +161,7 @@ var navigationBar = app.requireModule('navigationBar');
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      url: "http://192.168.3.31:8080/"
+      url: "file://assets/dist/index.html#/musicList"
     };
   },
   appActive: function appActive(data) {//APP进入前台：App从【后台】切换至【前台】时触发

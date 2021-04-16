@@ -110,6 +110,10 @@ public class ExtendWebView extends WebView {
         webSettings.setBuiltInZoomControls(true);
         //隐藏原生的缩放控件
         webSettings.setDisplayZoomControls(false);
+        //允许ajax加载本地文件
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAllowFileAccessFromFileURLs(true);
+        webSettings.setAllowUniversalAccessFromFileURLs(true);
         //设置UA
         this.userAgent = webSettings.getUserAgentString() + ";android_kuaifan_eeui/" + eeuiCommon.getLocalVersionName(getContext());
         setUserAgent("");

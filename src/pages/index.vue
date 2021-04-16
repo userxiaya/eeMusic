@@ -12,7 +12,7 @@ const navigationBar = app.requireModule('navigationBar');
 export default {
   data() {
     return {
-      url: "http://192.168.3.31:8080/",
+      url: "file://assets/dist/index.html#/musicList",
     };
   },
 
