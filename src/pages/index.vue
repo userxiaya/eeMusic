@@ -1,5 +1,16 @@
 <template>
   <div class="app">
+    <navbar class="navbar">
+      <navbar-item type="left">
+        <icon content="md-arrow-back" class="icon"></icon>
+      </navbar-item>
+      <navbar-item type="title">
+        <text class="text">vip音乐文件解码</text>
+      </navbar-item>
+      <navbar-item type="right">
+        <icon content="md-refresh" class="icon"></icon>
+      </navbar-item>
+    </navbar>
     <web-view ref="web" class="webview" :url="url"> </web-view>
   </div>
 </template>
@@ -58,6 +69,11 @@ export default {
 .navbar {
   width: 750px;
   height: 100px;
+  padding-top: 15px;
   background-color: #ff5001;
+}
+.text {
+  color: #ffffff;
+  font-weight: bold;
 }
 </style>
