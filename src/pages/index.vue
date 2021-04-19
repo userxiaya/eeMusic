@@ -68,9 +68,10 @@ export default {
 }
 .navbar {
   width: 750px;
-  height: 100px;
-  padding-top: 15px;
+  height: 150px;
+  padding-top: 60px;
   background-color: #ff5001;
+  box-sizing: border-box;
 }
 .text {
   color: #ffffff;

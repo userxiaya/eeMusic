@@ -128,7 +128,11 @@ public class fileTools {
             for (final File file : files) {
                 /*是符合后缀名的文件  添加到列表中*/
                 if (isDir(file, dirList)) {
-                    scanedFiles.add(getFileData(file));
+                    Log.i(file.getName(),file.length()+"");
+                    //3mb以上
+                    if (file.length() >= 1024 * 1024 * 3) {
+                        scanedFiles.add(getFileData(file));
+                    }
                 }
                 /*是目录*/
                 if (file.isDirectory()) {
@@ -162,14 +166,16 @@ public class fileTools {
         }
         return result; //false
     }
+
     private static Map<String, Object> getFileData(File file) {
         Map<String, Object> fileData = new HashMap<>();
-        fileData.put("fileName",file.getName());
-        fileData.put("path","file://"+file.getPath());
+        fileData.put("fileName", file.getName());
+        fileData.put("path", "file://" + file.getPath());
         return fileData;
     }
+
     public static String fileToBase64(String filePath) {
-        String newUrl = filePath.replace("file://","");
+        String newUrl = filePath.replace("file://", "");
         File file = new File(newUrl);
         String base64 = null;
         InputStream in = null;
@@ -179,10 +185,8 @@ public class fileTools {
             int length = in.read(bytes);
             base64 = Base64.encodeToString(bytes, 0, length, Base64.DEFAULT);
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
             try {
@@ -190,7 +194,6 @@ public class fileTools {
                     in.close();
                 }
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
