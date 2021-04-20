@@ -1,7 +1,6 @@
 package app.eeui.framework.extend.view;
 
 import android.annotation.TargetApi;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -10,6 +9,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
@@ -36,7 +36,7 @@ public class JavaScriptInterface {
 
     @JavascriptInterface
     public void getBase64FromBlobData(String base64Data, String fileName, String ext) throws IOException {
-        convertBase64StringToPdfAndStoreIt(base64Data, fileName,ext);
+        convertBase64StringToPdfAndStoreIt(base64Data, fileName, ext);
     }
 
     public static String getBase64StringFromBlobUrl(String blobUrl) {
@@ -52,8 +52,7 @@ public class JavaScriptInterface {
                     "        reader.readAsDataURL(blobFile);" +
                     "        reader.onloadend = function() {" +
                     "            base64data = reader.result;" +
-                    "            var newAudio = window.newAudio || {};" +
-                    "            Android.getBase64FromBlobData(base64data, newAudio.filename||null, newAudio.ext||null);" +
+                    "            Android.getBase64FromBlobData(base64data, (window.newAudio || {}).title || null, (window.newAudio || {}).ext || null);" +
                     "        }" +
                     "    }" +
                     "};" +
@@ -72,19 +71,24 @@ public class JavaScriptInterface {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void convertBase64StringToPdfAndStoreIt(String base64File, String fileName, String ext) throws IOException {
+
         Context contextNew = this.context;
-        if(fileName==null || ext==null) {
-            Log.i("download","下载失败，文件名异常");
-            Toast.makeText(contextNew, "下载失败，文件名异常", Toast.LENGTH_LONG);
+
+        if (fileName == null || ext == null) {
+            Log.i("download", "下载失败，文件名异常");
+            Toast toastErr = Toast.makeText(contextNew, "下载失败，文件名异常", Toast.LENGTH_LONG);
+            toastErr.setGravity(Gravity.TOP, 0, 20);
+            toastErr.show();
             return;
         }
-        Log.i("download","下载...");
+        String dir = "." + ext;
+        Log.i("download", fileName + "下载...");
 
         final int notificationId = 5;
         String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
         final File dwldsPath = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOWNLOADS) + fileName + currentDateTime + ext);
-        byte[] pdfAsBytes = Base64.decode(base64File.replaceFirst("^data:audio/flac;base64,", ""), 0);
+                Environment.DIRECTORY_DOWNLOADS) + "/" + fileName + dir);
+        byte[] pdfAsBytes = Base64.decode(base64File.replaceFirst("^data:audio/" + ext + ";base64,", ""), 0);
         FileOutputStream os;
         os = new FileOutputStream(dwldsPath, false);
         os.write(pdfAsBytes);
@@ -112,7 +116,9 @@ public class JavaScriptInterface {
                 long delayInMilliseconds = 5000;
                 h.postDelayed(new Runnable() {
                     public void run() {
-                        Toast.makeText(contextNew, "下载完成", Toast.LENGTH_LONG);
+                        Toast toastSucc = Toast.makeText(contextNew, "下载成功", Toast.LENGTH_SHORT);
+                        toastSucc.setGravity(Gravity.TOP, 0, 20);
+                        toastSucc.show();
                         nm.cancel(notificationId);
                     }
                 }, delayInMilliseconds);
