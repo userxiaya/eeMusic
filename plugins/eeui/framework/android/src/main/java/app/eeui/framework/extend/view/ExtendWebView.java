@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import androidx.core.content.FileProvider;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
@@ -84,6 +85,8 @@ public class ExtendWebView extends WebView {
         progressbar.setProgressDrawable(drawable);
         addView(progressbar);
         setWebViewClient(new WebViewClient());
+        //todo
+        addJavascriptInterface(new JavaScriptInterface(getContext()), "Android");
         setDownloadListener(new DownloadListener());
         setWebChromeClient(mWebChromeClient);
         initSetting();
@@ -114,6 +117,9 @@ public class ExtendWebView extends WebView {
         webSettings.setAllowFileAccess(true);
         webSettings.setAllowFileAccessFromFileURLs(true);
         webSettings.setAllowUniversalAccessFromFileURLs(true);
+        //
+        webSettings.setSupportMultipleWindows(true);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         //设置UA
         this.userAgent = webSettings.getUserAgentString() + ";android_kuaifan_eeui/" + eeuiCommon.getLocalVersionName(getContext());
         setUserAgent("");
@@ -123,10 +129,13 @@ public class ExtendWebView extends WebView {
 
         @Override
         public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.addCategory(Intent.CATEGORY_BROWSABLE);
-            intent.setData(Uri.parse(url));
-            getContext().startActivity(intent);
+            //todo
+            Log.i("onDownloadStart",url + mimetype);
+            loadUrl(JavaScriptInterface.getBase64StringFromBlobUrl(url));
+//            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+//            intent.setData(Uri.parse(url));
+//            getContext().startActivity(intent);
         }
     }
 

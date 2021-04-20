@@ -11,6 +11,8 @@
     <!--读写内存-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--下载-->
+    <uses-permission android:name ="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
 
     <!-- 相机权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
