@@ -120,8 +120,14 @@ public class WelcomeActivity extends AppCompatActivity {
                     }
                 }
             });
-            eeuiPage.openWin(WelcomeActivity.this, mPageBean);
-            finish();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    eeuiPage.openWin(WelcomeActivity.this, mPageBean);
+                    finish();
+                }
+            },5000);  //延迟5s后执行
+
         });
     }
 }
