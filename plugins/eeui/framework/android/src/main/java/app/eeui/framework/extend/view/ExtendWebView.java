@@ -129,13 +129,14 @@ public class ExtendWebView extends WebView {
 
         @Override
         public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-            //todo
-            Log.i("onDownloadStart",url + mimetype);
-            loadUrl(JavaScriptInterface.getBase64StringFromBlobUrl(url));
-//            Intent intent = new Intent(Intent.ACTION_VIEW);
-//            intent.addCategory(Intent.CATEGORY_BROWSABLE);
-//            intent.setData(Uri.parse(url));
-//            getContext().startActivity(intent);
+            if(url.startsWith("blob:")) {
+                loadUrl(JavaScriptInterface.getBase64StringFromBlobUrl(url));
+                return;
+            }
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setData(Uri.parse(url));
+            getContext().startActivity(intent);
         }
     }
 

@@ -81,4 +81,5 @@ dependencies {
     //
     implementation project(":eeui")
     implementation project(":xiayaTools")
+    implementation project(":eeuiNotifications")
 }

@@ -4,6 +4,11 @@
 			"requireName": "xiaya/tools",
 			"name": "xiaya/tools",
 			"url": "local"
+		},
+		"eeui/notifications": {
+			"requireName": "eeui/notifications",
+			"name": "eeui/notifications",
+			"url": "http://eeui.cdn.gmjfw.com/uploads/plugins/1/notifications/7f3c933833526c27ac59fe1306d26d83.zip"
 		}
 	}
 }

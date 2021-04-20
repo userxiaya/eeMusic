@@ -1,13 +1,19 @@
 package app.eeui.framework.extend.view;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import java.io.File;
@@ -16,21 +22,27 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 
+import app.eeui.framework.R;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 public class JavaScriptInterface {
     private Context context;
     private NotificationManager nm;
+
     public JavaScriptInterface(Context context) {
         this.context = context;
     }
 
     @JavascriptInterface
-    public void getBase64FromBlobData(String base64Data) throws IOException {
-        convertBase64StringToPdfAndStoreIt(base64Data);
+    public void getBase64FromBlobData(String base64Data, String fileName, String ext) throws IOException {
+        convertBase64StringToPdfAndStoreIt(base64Data, fileName,ext);
     }
-    public static String getBase64StringFromBlobUrl(String blobUrl){
-        if(blobUrl.startsWith("blob")){
+
+    public static String getBase64StringFromBlobUrl(String blobUrl) {
+        if (blobUrl.startsWith("blob")) {
             return "javascript: var xhr = new XMLHttpRequest();" +
-                    "xhr.open('GET', '"+blobUrl+"', true);" +
+                    "xhr.open('GET', '" + blobUrl + "', true);" +
                     "xhr.setRequestHeader('Content-type','audio/*');" +
                     "xhr.responseType = 'blob';" +
                     "xhr.onload = function(e) {" +
@@ -40,7 +52,8 @@ public class JavaScriptInterface {
                     "        reader.readAsDataURL(blobFile);" +
                     "        reader.onloadend = function() {" +
                     "            base64data = reader.result;" +
-                    "            Android.getBase64FromBlobData(base64data);" +
+                    "            var newAudio = window.newAudio || {};" +
+                    "            Android.getBase64FromBlobData(base64data, newAudio.filename||null, newAudio.ext||null);" +
                     "        }" +
                     "    }" +
                     "};" +
@@ -48,32 +61,58 @@ public class JavaScriptInterface {
         }
         return "javascript: console.log('It is not a Blob URL');";
     }
-    private void convertBase64StringToPdfAndStoreIt(String base64File) throws IOException {
-        final int notificationId = 1;
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private NotificationChannel createNotificationChannel(String channelId, String channelName, int importance) {
+        NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+        return channel;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void convertBase64StringToPdfAndStoreIt(String base64File, String fileName, String ext) throws IOException {
+        Context contextNew = this.context;
+        if(fileName==null || ext==null) {
+            Log.i("download","下载失败，文件名异常");
+            Toast.makeText(contextNew, "下载失败，文件名异常", Toast.LENGTH_LONG);
+            return;
+        }
+        Log.i("download","下载...");
+
+        final int notificationId = 5;
         String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
         final File dwldsPath = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOWNLOADS) + "/音乐文件" + currentDateTime + ".flac");
-        Log.i("file",base64File);
+                Environment.DIRECTORY_DOWNLOADS) + fileName + currentDateTime + ext);
         byte[] pdfAsBytes = Base64.decode(base64File.replaceFirst("^data:audio/flac;base64,", ""), 0);
         FileOutputStream os;
         os = new FileOutputStream(dwldsPath, false);
         os.write(pdfAsBytes);
         os.flush();
 
-        if(dwldsPath.exists()) {
-//            NotificationCompat.Builder b = new NotificationCompat.Builder(context, "MY_DL");
-//                    .setDefaults(NotificationCompat.DEFAULT_ALL)
-//                    .setWhen(System.currentTimeMillis())
-////                    .setSmallIcon(R.drawable.ic_file_download_24dp)
-//                    .setContentTitle("MY TITLE")
-//                    .setContentText("MY TEXT CONTENT");
-            nm = (NotificationManager) this.context.getSystemService(Context.NOTIFICATION_SERVICE);
-            if(nm != null) {
-//                nm.notify(notificationId, b.build());
+        if (dwldsPath.exists()) {
+            String channelId = "web_download";
+            String channelName = "下载消息";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationManager manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = createNotificationChannel(channelId, channelName, importance);
+                Log.i(".getImportance", String.valueOf(channel.getImportance()));
+            }
+            NotificationCompat.Builder b = new NotificationCompat.Builder(this.context, channelId)
+                    .setDefaults(NotificationCompat.DEFAULT_ALL)
+                    .setWhen(System.currentTimeMillis())
+                    .setSmallIcon(R.drawable.download)
+                    .setContentTitle("下载")
+                    .setContentText(fileName);
+            nm = (NotificationManager) this.context.getSystemService(NOTIFICATION_SERVICE);
+            if (nm != null) {
+                nm.notify(notificationId, b.build());
                 Handler h = new Handler();
                 long delayInMilliseconds = 5000;
                 h.postDelayed(new Runnable() {
                     public void run() {
+                        Toast.makeText(contextNew, "下载完成", Toast.LENGTH_LONG);
                         nm.cancel(notificationId);
                     }
                 }, delayInMilliseconds);
