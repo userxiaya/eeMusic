@@ -19,8 +19,7 @@ import androidx.core.app.NotificationCompat;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Date;
+
 
 import app.eeui.framework.R;
 
@@ -37,6 +36,30 @@ public class JavaScriptInterface {
     @JavascriptInterface
     public void getBase64FromBlobData(String base64Data, String fileName, String ext) throws IOException {
         convertBase64StringToPdfAndStoreIt(base64Data, fileName, ext);
+    }
+
+    @JavascriptInterface
+    public void playMusicFromBlobData(String base64Data, String fileName, String ext) throws IOException {
+        Context contextNew = this.context;
+        if (fileName == null || ext == null) {
+            Toast toastErr = Toast.makeText(contextNew, "播放失败，文件名异常", Toast.LENGTH_LONG);
+            toastErr.setGravity(Gravity.TOP, 0, 200);
+            toastErr.show();
+            return;
+        }
+        String dir = "." + ext;
+
+        final File dwldsPath = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS) + "/" + fileName + dir);
+        if (dwldsPath.exists()) {
+            String url = dwldsPath.getPath();
+            Log.i("eeeext", "abaab");
+//            if (MusicService.getService().playNext(url)) {
+//                return;
+//            }
+//            Log.i("eeeext", dwldsPath.getPath());
+        }
+
     }
 
     public static String getBase64StringFromBlobUrl(String blobUrl) {
@@ -77,23 +100,16 @@ public class JavaScriptInterface {
         if (fileName == null || ext == null) {
             Log.i("download", "下载失败，文件名异常");
             Toast toastErr = Toast.makeText(contextNew, "下载失败，文件名异常", Toast.LENGTH_LONG);
-            toastErr.setGravity(Gravity.TOP, 0, 20);
+            toastErr.setGravity(Gravity.TOP, 0, 200);
             toastErr.show();
             return;
         }
         String dir = "." + ext;
-        Log.i("download", fileName + "下载...");
 
         final int notificationId = 5;
-        String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
         final File dwldsPath = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DOWNLOADS) + "/" + fileName + dir);
-        byte[] pdfAsBytes = Base64.decode(base64File.replaceFirst("^data:audio/" + ext + ";base64,", ""), 0);
-        FileOutputStream os;
-        os = new FileOutputStream(dwldsPath, false);
-        os.write(pdfAsBytes);
-        os.flush();
-
+        Log.i("file-path", dwldsPath.getPath());
         if (dwldsPath.exists()) {
             String channelId = "web_download";
             String channelName = "下载消息";
@@ -101,7 +117,6 @@ public class JavaScriptInterface {
             NotificationManager manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel channel = createNotificationChannel(channelId, channelName, importance);
-                Log.i(".getImportance", String.valueOf(channel.getImportance()));
             }
             NotificationCompat.Builder b = new NotificationCompat.Builder(this.context, channelId)
                     .setDefaults(NotificationCompat.DEFAULT_ALL)
@@ -113,16 +128,21 @@ public class JavaScriptInterface {
             if (nm != null) {
                 nm.notify(notificationId, b.build());
                 Handler h = new Handler();
-                long delayInMilliseconds = 5000;
+                long delayInMilliseconds = 2000;
                 h.postDelayed(new Runnable() {
                     public void run() {
                         Toast toastSucc = Toast.makeText(contextNew, "下载成功", Toast.LENGTH_SHORT);
-                        toastSucc.setGravity(Gravity.TOP, 0, 20);
+                        toastSucc.setGravity(Gravity.TOP, 0, 200);
                         toastSucc.show();
                         nm.cancel(notificationId);
                     }
                 }, delayInMilliseconds);
             }
         }
+        byte[] pdfAsBytes = Base64.decode(base64File.replaceFirst("^data:audio/" + ext + ";base64,", ""), 0);
+        FileOutputStream os;
+        os = new FileOutputStream(dwldsPath, false);
+        os.write(pdfAsBytes);
+        os.flush();
     }
 }

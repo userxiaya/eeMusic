@@ -1,16 +1,23 @@
 include ':app'
 
 
+
 include ":eeui"
 project (':eeui').projectDir = new File("../../../plugins/eeui/framework/android")
+
 
 
 include ":weex_sdk"
 project (':weex_sdk').projectDir = new File("../../../plugins/eeui/WeexSDK/android/sdk")
 
 
+
 include ":xiayaTools"
 project (":xiayaTools").projectDir = new File("../../../plugins/xiaya/tools/android")
 
+
 include ":eeuiNotifications"
 project (":eeuiNotifications").projectDir = new File("../../../plugins/eeui/notifications/android")
+
+include ":eeuiAudio"
+project (":eeuiAudio").projectDir = new File("../../../plugins/eeui/audio/android")

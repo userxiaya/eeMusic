@@ -29,7 +29,7 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fullScreen();
-        setContentView(R.layout.activity_splash);
+//        setContentView(R.layout.activity_splash);
         new Handler().postDelayed(() -> openNext(""), eeuiBase.cloud.welcome(this, new eeuiBase.OnWelcomeListener() {
             @Override
             public void skip() {
@@ -126,7 +126,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     eeuiPage.openWin(WelcomeActivity.this, mPageBean);
                     finish();
                 }
-            },5000);  //延迟5s后执行
+            },3000);  //延迟5s后执行
 
         });
     }

@@ -9,6 +9,11 @@
 			"requireName": "eeui/notifications",
 			"name": "eeui/notifications",
 			"url": "http://eeui.cdn.gmjfw.com/uploads/plugins/1/notifications/7f3c933833526c27ac59fe1306d26d83.zip"
+		},
+		"eeui/audio": {
+			"requireName": "eeui/audio",
+			"name": "eeui/audio",
+			"url": "http://eeui.cdn.gmjfw.com/uploads/plugins/1/audio/d9cfe3f797b93f7186a2fd347250c783.zip"
 		}
 	}
 }
