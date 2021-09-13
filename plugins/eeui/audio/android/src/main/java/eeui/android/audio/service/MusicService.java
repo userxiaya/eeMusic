@@ -1,11 +1,20 @@
 package eeui.android.audio.service;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -13,15 +22,22 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import app.eeui.framework.ui.eeui;
+import eeui.android.audio.R;
 import eeui.android.audio.event.AudioEvent;
+import eeui.android.audio.module.WeexaudioModule;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 @SuppressLint({"HandlerLeak", "StaticFieldLeak"})
 public class MusicService {
 
     private Timer timer;
     private String url;
+    private static Boolean isError = false;
     private static MediaPlayer mPlayer = null;
     private static MusicService service;
+
 
     private class PlayAsyncTask extends AsyncTask<String, Integer, String> {
         @Override
@@ -60,6 +76,7 @@ public class MusicService {
         if (url == null || url.equals(this.url)) {
             return;
         }
+        isError = false;
         this.url = url;
         try {
             if (mPlayer != null) {
@@ -108,9 +125,16 @@ public class MusicService {
         return true;
     }
 
-    public void pause() {
+    public void pauseOrPlay() {
         if (mPlayer != null) {
-            mPlayer.pause();
+            Log.i("caca", isPlay()+"");
+            if(isPlay()==true) {
+                mPlayer.pause();
+                onNotificationClick(AudioEvent.STATE_PAUSE);
+            } else {
+                mPlayer.start();
+                onNotificationClick(AudioEvent.STATE_PLAY);
+            }
         }
     }
 
@@ -132,7 +156,7 @@ public class MusicService {
 
     public boolean isPlay() {
         if (mPlayer != null) {
-            mPlayer.isPlaying();
+           return mPlayer.isPlaying();
         }
         return false;
     }
@@ -146,6 +170,13 @@ public class MusicService {
     public void setLoop(boolean loop) {
         if (mPlayer != null) {
             mPlayer.setLooping(loop);
+        }
+    }
+    public void onNotificationClick(int state) {
+        if(mPlayer!=null) {
+            EventBus.getDefault().post(new AudioEvent(url, mPlayer.getCurrentPosition(), mPlayer.getDuration(), state));
+        } else {
+            EventBus.getDefault().post(new AudioEvent(url, 0, 0, state));
         }
     }
 
@@ -167,6 +198,7 @@ public class MusicService {
             mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                    isError = true;
                     eventPost(url, AudioEvent.STATE_ERROR);
                     cancelTimer();
                     if (i == -38) {
@@ -200,6 +232,7 @@ public class MusicService {
         }
     }
 
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -220,8 +253,10 @@ public class MusicService {
                 if (mPlayer == null || temp != error38reNum) {
                     return;
                 }
-                statTimer();
-                mPlayer.start();
+                if (isError == false) {
+                  statTimer();
+                  mPlayer.start();
+                }
             }
         }, 3000);
     }
@@ -230,8 +265,12 @@ public class MusicService {
         try {
             if (mPlayer == null) {
                 EventBus.getDefault().post(new AudioEvent(url, state));
-            }else{
-                EventBus.getDefault().post(new AudioEvent(url, mPlayer.getCurrentPosition(), mPlayer.getDuration(), state));
+            }else {
+                if(isPlay() == true) {
+                    EventBus.getDefault().post(new AudioEvent(url, mPlayer.getCurrentPosition(), mPlayer.getDuration(), state));
+                } else {
+                    EventBus.getDefault().post(new AudioEvent(url, 0, 0, state));
+                }
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -258,4 +297,5 @@ public class MusicService {
         };
         timer.schedule(timerTask, 0, 500);
     }
+
 }

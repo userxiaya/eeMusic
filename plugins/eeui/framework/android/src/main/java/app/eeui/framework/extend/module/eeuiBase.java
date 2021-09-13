@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -63,9 +61,7 @@ public class eeuiBase {
 
     public interface OnWelcomeListener {
         void skip();
-
         void finish();
-
         void click(String var);
     }
 
@@ -92,14 +88,13 @@ public class eeuiBase {
 
         /**
          * 读取配置
-         *
          * @return
          */
         public static JSONObject get() {
             if (configData == null) {
                 configData = eeuiJson.parseObject(verifyAssets(eeui.getApplication(), "file://assets/eeui/config.json"));
             }
-            for (Map.Entry<String, Object> entry : getCustomConfig().entrySet()) {
+            for (Map.Entry<String, Object> entry :  getCustomConfig().entrySet()) {
                 configData.put(entry.getKey(), entry.getValue());
             }
             return configData;
@@ -115,7 +110,6 @@ public class eeuiBase {
 
         /**
          * 获取配置值
-         *
          * @param key
          * @return
          */
@@ -125,7 +119,6 @@ public class eeuiBase {
 
         /**
          * 获取配置值
-         *
          * @param key
          * @return
          */
@@ -135,7 +128,6 @@ public class eeuiBase {
 
         /**
          * 获取配置原始值
-         *
          * @param key
          * @return
          */
@@ -145,7 +137,6 @@ public class eeuiBase {
 
         /**
          * 获取主页地址
-         *
          * @param mOnHomeUrlListener
          */
         public static void getHomeUrl(OnHomeUrlListener mOnHomeUrlListener) {
@@ -153,7 +144,7 @@ public class eeuiBase {
             final String[] homePage = {eeuiJson.getString(get(), "homePage")};
             if (homePage[0].length() == 0) {
                 homePage[0] = "file://assets/eeui/pages/index.js";
-            } else {
+            }else{
                 homePage[0] = eeuiPage.suffixUrl("app", homePage[0]);
                 homePage[0] = eeuiPage.rewriteUrl("file://assets/eeui/pages/index.js", homePage[0]);
             }
@@ -165,7 +156,7 @@ public class eeuiBase {
             boolean isLip = false;
             try {
                 String socketIP = eeuiParse.parseStr(new URL(socketHome).getHost());
-                for (String ipv : eeuiIp.getHostIPv4Lists()) {
+                for(String ipv: eeuiIp.getHostIPv4Lists()) {
                     ipv = ipv.substring(0, ipv.lastIndexOf("."));
                     if (socketIP.startsWith(ipv)) {
                         isLip = true;
@@ -223,7 +214,6 @@ public class eeuiBase {
 
         /**
          * 获取主页配置值
-         *
          * @param key
          * @param defaultVal
          * @return
@@ -238,7 +228,6 @@ public class eeuiBase {
 
         /**
          * 转换修复Assets文件内容
-         *
          * @param context
          * @param originalUrl
          * @return
@@ -257,7 +246,6 @@ public class eeuiBase {
 
         /**
          * 转换修复文件路径
-         *
          * @param originalUrl
          * @return
          */
@@ -273,7 +261,7 @@ public class eeuiBase {
             if (!originalUrl.startsWith(rootPath)) {
                 return originalUrl;
             }
-            rootPath += "/";
+            rootPath+= "/";
 
             String originalPath = originalUrl.replace(rootPath, "");
             File path = eeui.getApplication().getExternalFilesDir("update");
@@ -306,7 +294,6 @@ public class eeuiBase {
 
         /**
          * 获取热更新目录
-         *
          * @return
          */
         public static JSONArray verifyData() {
@@ -340,7 +327,6 @@ public class eeuiBase {
 
         /**
          * 是否有升级文件
-         *
          * @return
          */
         public static boolean verifyIsUpdate() {
@@ -357,7 +343,7 @@ public class eeuiBase {
             }
             boolean isUpdate = false;
             for (File file : files) {
-                if (isDir(file)) {
+                if(isDir(file)){
                     isUpdate = true;
                     break;
                 }
@@ -367,7 +353,6 @@ public class eeuiBase {
 
         /**
          * 设置自定义配置
-         *
          * @param key
          * @param value
          */
@@ -380,7 +365,6 @@ public class eeuiBase {
 
         /**
          * 获取自定义配置
-         *
          * @return
          */
         public static JSONObject getCustomConfig() {
@@ -406,7 +390,6 @@ public class eeuiBase {
 
         /**
          * 判断是否文件夹（不存在返回NO）
-         *
          * @param file
          * @return
          */
@@ -422,7 +405,6 @@ public class eeuiBase {
 
         /**
          * 判断是否文件（不存在返回NO）
-         *
          * @param file
          * @return
          */
@@ -446,14 +428,13 @@ public class eeuiBase {
 
         /**
          * 获取服务端地址
-         *
          * @param act
          * @return
          */
         public static String getUrl(String act) {
             String url = config.getString("serviceUrl", null);
             if (!TextUtils.isEmpty(url)) {
-                url += url.contains("?") ? "&" : "?";
+                url+= url.contains("?") ? "&" : "?";
                 return url + "act=" + act;
             }
             //
@@ -478,7 +459,6 @@ public class eeuiBase {
 
         /**
          * 加载启动图
-         *
          * @param activity
          * @return
          */
@@ -488,8 +468,7 @@ public class eeuiBase {
                 return 0;
             }
             JSONObject appInfo = eeuiJson.parseObject(eeuiCommon.getCachesString(eeui.getApplication(), "__system:appInfo", "{}"));
-            int welcome_wait = eeuiParse.parseInt(eeuiCommon.getCachesString(eeui.getApplication(), "__system:welcome_wait", "0"));
-            welcome_wait = welcome_wait > 100 ? welcome_wait : 2000;
+            int welcome_wait = eeuiParse.parseInt(eeuiCommon.getCachesString(eeui.getApplication(), "__system:welcome_wait", "0")); welcome_wait = welcome_wait > 100 ? welcome_wait : 2000;
             boolean welcome_skip = eeuiJson.getBoolean(appInfo, "welcome_skip");
             String welcome_jump = eeuiJson.getString(appInfo, "welcome_jump");
             long welcome_limit_s = eeuiJson.getLong(appInfo, "welcome_limit_s");
@@ -541,7 +520,7 @@ public class eeuiBase {
             //
             if (welcome_skip) {
                 fillskip.setVisibility(View.VISIBLE);
-            } else {
+            }else{
                 new Handler().postDelayed(() -> fillload.post(() -> fillload.setVisibility(View.VISIBLE)), welcome_wait);
             }
             //
@@ -600,7 +579,6 @@ public class eeuiBase {
 
         /**
          * 缓存启动图
-         *
          * @param url
          * @param wait
          */
@@ -616,7 +594,7 @@ public class eeuiBase {
                         eeuiCommon.setCachesString(eeui.getApplication(), "__system:welcome_image", null, 0);
                     }
                 }).start();
-            } else {
+            }else{
                 eeuiCommon.setCachesString(eeui.getApplication(), "__system:welcome_image", null, 0);
             }
             eeuiCommon.setCachesString(eeui.getApplication(), "__system:welcome_wait", String.valueOf(wait), 0);
@@ -624,7 +602,6 @@ public class eeuiBase {
 
         /**
          * 更新部分
-         *
          * @param lists
          * @param number
          */
@@ -683,7 +660,7 @@ public class eeuiBase {
                                 }
                                 if (lists.size() > number + 1) {
                                     checkUpdateLists(lists, number + 1);
-                                } else {
+                                }else{
                                     checkUpdateHint(data);
                                 }
                             } catch (IOException e) {
@@ -707,7 +684,7 @@ public class eeuiBase {
                         }
                     });
                 }
-            } else if (valid == 2) {
+            }else if (valid == 2) {
                 //开始删除
                 boolean isDelete = false;
                 if (config.isFile(lockFile)) {
@@ -729,7 +706,7 @@ public class eeuiBase {
                 }
                 if (lists.size() > number + 1) {
                     checkUpdateLists(lists, number + 1);
-                } else {
+                }else{
                     checkUpdateHint(data);
                 }
             }

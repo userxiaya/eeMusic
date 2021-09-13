@@ -28,6 +28,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.instapp.nat:media-audio:2.0.0'
     implementation 'org.greenrobot:eventbus:3.1.1'
+    //下载
+    implementation 'com.liulishuo.filedownloader:library:1.7.6'
+    implementation 'com.android.support:palette-v7:22.2.0'
+    implementation 'com.android.support:support-media-compat:26'
     //
     compileOnly "com.alibaba:fastjson:${project.fastjsonLibVersion}"
     compileOnly "org.apache.weex:sdk_legacy:${project.weex_sdkLibVersion}"

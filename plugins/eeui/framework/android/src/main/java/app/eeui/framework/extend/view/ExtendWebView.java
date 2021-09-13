@@ -15,7 +15,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import androidx.core.content.FileProvider;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
@@ -27,6 +26,7 @@ import android.widget.Toast;
 import com.taobao.weex.bridge.JSCallback;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
 import app.eeui.framework.R;
@@ -85,8 +85,6 @@ public class ExtendWebView extends WebView {
         progressbar.setProgressDrawable(drawable);
         addView(progressbar);
         setWebViewClient(new WebViewClient());
-        //todo
-        addJavascriptInterface(new JavaScriptInterface(getContext()), "Android");
         setDownloadListener(new DownloadListener());
         setWebChromeClient(mWebChromeClient);
         initSetting();
@@ -116,10 +114,8 @@ public class ExtendWebView extends WebView {
         //允许ajax加载本地文件
         webSettings.setAllowFileAccess(true);
         webSettings.setAllowFileAccessFromFileURLs(true);
+        //允许ajax跨域
         webSettings.setAllowUniversalAccessFromFileURLs(true);
-        //
-        webSettings.setSupportMultipleWindows(true);
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         //设置UA
         this.userAgent = webSettings.getUserAgentString() + ";android_kuaifan_eeui/" + eeuiCommon.getLocalVersionName(getContext());
         setUserAgent("");
@@ -129,10 +125,6 @@ public class ExtendWebView extends WebView {
 
         @Override
         public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-            if(url.startsWith("blob:")) {
-                loadUrl(JavaScriptInterface.getBase64StringFromBlobUrl(url));
-                return;
-            }
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.addCategory(Intent.CATEGORY_BROWSABLE);
             intent.setData(Uri.parse(url));
@@ -288,7 +280,10 @@ public class ExtendWebView extends WebView {
         }else if (url.startsWith("file:///assets/")) {
             url = "file:///android_asset/" + url.substring(15);
         }
-        super.loadUrl(url);
+        Map<String,String> extraHeaders = new HashMap<String,String>();
+        extraHeaders.put("Referer","https://y.qq.com/");
+        extraHeaders.put("origin","https://y.qq.com/");
+        super.loadUrl(url, extraHeaders);
     }
 
     /**

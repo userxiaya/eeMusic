@@ -80,7 +80,6 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
     //
     implementation project(":eeui")
-    implementation project(":xiayaTools")
-    implementation project(":eeuiNotifications")
     implementation project(":eeuiAudio")
+    implementation project(":eeuiDemo")
 }

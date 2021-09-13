@@ -1,8 +1,8 @@
 {
-	"name": "eeMusic",
-	"appName": "eeMusic",
-	"applicationID": "app.eeui.demo",
-	"bundleIdentifier": "app.eeui.demo",
-	"release": "2.4.4",
+	"name": "eebox",
+	"appName": "eebox",
+	"applicationID": "app.eeui.eebox",
+	"bundleIdentifier": "app.eeui.eebox",
+	"release": "2.5.0",
 	"location": "eeui"
 }

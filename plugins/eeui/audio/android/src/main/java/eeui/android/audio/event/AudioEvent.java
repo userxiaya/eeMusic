@@ -33,6 +33,12 @@ public class AudioEvent {
     public final static int STATE_ERROR = 4;
     public final static int STATE_SEEK_COMPELETE = 5;
     public final static int STATE_BufferingUpdate = 6;
+    public final static int STATE_NEXT = 7;
+    public final static int STATE_LAST = 8;
+    public final static int STATE_PAUSE = 9;
+    public final static int STATE_CLOSE_NOTIFICATION = 10;
+
+    public static final String DEAULT_NOTIFICATION = "notification";
 
 
 }

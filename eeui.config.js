@@ -6,7 +6,7 @@ module.exports = {
 	"serviceUrl": "",
 	"homePage": "",
 	"homePageParams": {},
-	"appKey": "JYK5OWO8na1YFbLveGqJ2r64Ux6ytgaA",
+	"appKey": "qDywbXzjbzBW2B5KFSZGsRioggi8vINk",
 	"android": {
 		"imageEngine": "picasso"
 	},

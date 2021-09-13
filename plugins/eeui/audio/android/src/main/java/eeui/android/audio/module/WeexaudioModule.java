@@ -1,19 +1,19 @@
 package eeui.android.audio.module;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.taobao.weex.annotation.JSMethod;
 import com.taobao.weex.bridge.JSCallback;
 import com.taobao.weex.common.WXModule;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,14 +21,24 @@ import java.util.Map;
 import app.eeui.framework.extend.module.eeuiPage;
 import app.eeui.framework.ui.eeui;
 import eeui.android.audio.event.AudioEvent;
+import eeui.android.audio.event.musicNotifyManager;
 import eeui.android.audio.service.BackService;
 import eeui.android.audio.service.MusicService;
+
+import static com.liulishuo.filedownloader.util.DownloadServiceNotConnectedHelper.startForeground;
 
 public class WeexaudioModule extends WXModule {
 
     private static JSCallback callback;
 
+    musicNotifyManager noti = new musicNotifyManager();
     private boolean isBool = false;
+
+
+    public Context getContext(){
+        return BackService.getContext();
+    }
+
 
     public WeexaudioModule() {
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -45,12 +55,18 @@ public class WeexaudioModule extends WXModule {
         Intent in = new Intent(mWXSDKInstance.getContext(), BackService.class);
         in.putExtra("url", url);
         in.putExtra("loop", isBool);
+        Log.i("pplayMusic", url);
         mWXSDKInstance.getContext().startService(in);
     }
 
     @JSMethod
-    public void pause() {
-        MusicService.getService().pause();
+    public void notifyMusic(String songName, String artistName, String imgUrl) {
+        noti.notifyMusic(songName, artistName, imgUrl);
+    }
+
+    @JSMethod
+    public void pauseOrPlay() {
+        noti.pauseOrPlay();
     }
 
     @JSMethod
@@ -155,4 +171,6 @@ public class WeexaudioModule extends WXModule {
         }
         callback.invokeAndKeepAlive(data);
     }
+
 }
+

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 

@@ -6,9 +6,8 @@ def common
     pod 'eeui', :path => '../../../plugins/eeui/framework/ios'
     pod 'SocketRocket', '0.5.1'
     pod 'BindingX', '~> 1.0.3'
-    pod 'xiayaTools', :path => '../../../plugins/xiaya/tools/ios'
-    pod 'eeuiNotifications', :path => '../../../plugins/eeui/notifications/ios'
     pod 'eeuiAudio', :path => '../../../plugins/eeui/audio/ios'
+    pod 'eeuiDemo', :path => '../../../plugins/eeui/demo/ios'
 end
 
 target 'eeuiApp' do
