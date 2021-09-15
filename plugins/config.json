@@ -9,6 +9,11 @@
 			"requireName": "eeui/demo",
 			"name": "eeui/demo",
 			"url": "local"
+		},
+		"eebox/tools": {
+			"requireName": "eebox/tools",
+			"name": "eebox/tools",
+			"url": "local"
 		}
 	}
 }

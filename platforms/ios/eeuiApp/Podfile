@@ -8,6 +8,7 @@ def common
     pod 'BindingX', '~> 1.0.3'
     pod 'eeuiAudio', :path => '../../../plugins/eeui/audio/ios'
     pod 'eeuiDemo', :path => '../../../plugins/eeui/demo/ios'
+    pod 'eeboxTools', :path => '../../../plugins/eebox/tools/ios'
 end
 
 target 'eeuiApp' do

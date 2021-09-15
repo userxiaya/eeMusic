@@ -15,7 +15,6 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
-import androidx.palette.graphics.Palette;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -160,24 +159,24 @@ public class musicNotifyManager {
         }).start();
     }
     // todo
-    public void setBackground(Bitmap image) {
-        Palette.from(image).generate(new Palette.PaletteAsyncListener() {
-            @Override
-            public void onGenerated(Palette palette) {
-                Palette.Swatch swatch = palette.getMutedSwatch();
-                //Palette.Swatch swatch = palette.getVibrantSwatch();
-                //Palette.Swatch swatch = palette.getDarkMutedSwatch();
-                //Palette.Swatch swatch = palette.getDarkVibrantSwatch();
-                //Palette.Swatch swatch = palette.getLightMutedSwatch();
-                //Palette.Swatch swatch = palette.getLightVibrantSwatch();
-                if (swatch != null) {
-                    Log.i("setBackGround--11", swatch.getRgb()+"");
-                } else {
-                    Log.e("smallsoho", "swatch为空");
-                }
-            }
-        });
-    }
+//    public void setBackground(Bitmap image) {
+//        Palette.from(image).generate(new Palette.PaletteAsyncListener() {
+//            @Override
+//            public void onGenerated(Palette palette) {
+//                Palette.Swatch swatch = palette.getMutedSwatch();
+//                //Palette.Swatch swatch = palette.getVibrantSwatch();
+//                //Palette.Swatch swatch = palette.getDarkMutedSwatch();
+//                //Palette.Swatch swatch = palette.getDarkVibrantSwatch();
+//                //Palette.Swatch swatch = palette.getLightMutedSwatch();
+//                //Palette.Swatch swatch = palette.getLightVibrantSwatch();
+//                if (swatch != null) {
+//                    Log.i("setBackGround--11", swatch.getRgb()+"");
+//                } else {
+//                    Log.e("smallsoho", "swatch为空");
+//                }
+//            }
+//        });
+//    }
 
     public void update(String songName, String artistName, String imgUrl) {
         if(mNotification!=null) {

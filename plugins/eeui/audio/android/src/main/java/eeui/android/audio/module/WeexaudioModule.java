@@ -48,6 +48,7 @@ public class WeexaudioModule extends WXModule {
 
     @JSMethod
     public void play(String url) {
+        Log.i("playSong--=--", url);
         url = eeuiPage.rewriteUrl(mWXSDKInstance, url);
         if (MusicService.getService().playNext(url)) {
             return;

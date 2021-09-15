@@ -74,7 +74,7 @@ public class WelcomeActivity extends AppCompatActivity {
         eeuiBase.config.getHomeUrl(homeUrl -> {
             PageBean mPageBean = new PageBean();
             mPageBean.setUrl(homeUrl);
-            mPageBean.setPageName(eeuiBase.config.getHomeParams("pageName", "firstPage"));
+            mPageBean.setPageName(eeuiBase.config.getHomeParams("pageName", "index"));
             mPageBean.setPageTitle(eeuiBase.config.getHomeParams("pageTitle", ""));
             mPageBean.setPageType(eeuiBase.config.getHomeParams("pageType", "app"));
             mPageBean.setParams(eeuiBase.config.getHomeParams("params", "{}"));

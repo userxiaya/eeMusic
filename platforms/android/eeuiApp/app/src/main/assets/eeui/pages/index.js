@@ -119,7 +119,7 @@ __vue_options__ = __vue_exports__ = __vue_exports__.default
 if (typeof __vue_options__ === "function") {
   __vue_options__ = __vue_options__.options
 }
-__vue_options__.__file = "F:\\eebox\\src\\pages\\index.vue"
+__vue_options__.__file = "F:\\study\\eeMusic\\src\\pages\\index.vue"
 __vue_options__.render = __vue_template__.render
 __vue_options__.staticRenderFns = __vue_template__.staticRenderFns
 __vue_options__._scopeId = "data-v-6be49aa4"
@@ -161,28 +161,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var audio = app.requireModule("eeuiAudio");
 var navigator = app.requireModule('navigator');
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -191,28 +169,12 @@ var navigator = app.requireModule('navigator');
       variable: 0
     };
   },
-  methods: {
-    webmessage: function webmessage(_ref) {
-      var data = _ref.message;
-
-      if ((data === null || data === void 0 ? void 0 : data.module) === 'audio') {
-        audio.play(data.songUrl);
-        setTimeout(function () {
-          var img = data.songImage;
-          audio.notifyMusic(data.songname, data.singer, img);
-        }, 500);
-      }
-    },
-    gotoSearch: function gotoSearch() {
-      navigator.push({
-        url: 'search',
-        statusBarType: 'immersion'
-      });
+  pageMessage: function pageMessage(data) {
+    if ((data === null || data === void 0 ? void 0 : data.module) === 'playSong') {
+      audio.play(data.songUrl);
+      var img = data.songImage;
+      audio.notifyMusic(data.songname, data.singer, img);
     }
-  },
-  created: function created() {
-    var variable = eeui.getStatusBarHeight();
-    this.variable = variable;
   }
 });
 
@@ -228,20 +190,6 @@ var navigator = app.requireModule('navigator');
 module.exports = {
   "app": {
     "flex": 1
-  },
-  "navbarc": {
-    "width": "750",
-    "height": "100"
-  },
-  "title": {
-    "fontSize": "25",
-    "fontWeight": "bold",
-    "color": "#ffffff"
-  },
-  "icon": {
-    "width": "100",
-    "height": "100",
-    "color": "#ffffff"
   }
 }
 
@@ -255,37 +203,10 @@ module.exports = {
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('navbar', {
-    staticClass: ["navbarc"],
-    style: {
-      paddingTop: (_vm.variable + "px"),
-      height: ((100+_vm.variable) + "px")
-    }
-  }, [_c('navbar-item', {
-    attrs: {
-      "type": "title"
-    }
-  }, [_c('text', {
-    staticClass: ["title", "text"]
-  }, [_vm._v("音乐整合")])]), _c('navbar-item', {
-    attrs: {
-      "type": "right"
-    }
-  }, [_c('icon', {
-    staticClass: ["icon"],
-    attrs: {
-      "content": "tb-search"
-    },
-    on: {
-      "click": _vm.gotoSearch
-    }
-  })], 1)], 1), _c('web-view', {
+  return _c('div', [_c('web-view', {
     staticClass: ["app"],
     attrs: {
       "url": "file://assets/dist/index.html"
-    },
-    on: {
-      "receiveMessage": _vm.webmessage
     }
   })], 1)
 },staticRenderFns: []}
