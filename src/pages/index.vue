@@ -1,7 +1,7 @@
 <template>
     <div>
         <web-view url="file://assets/dist/index.html" class="app"> </web-view>
-        <!-- <web-view url="http://192.168.3.31:8080" class="app" @receiveMessage="webmessage"> </web-view> -->
+        <!-- <web-view url="http://192.168.3.31:8080" class="app"> </web-view> -->
     </div>
 </template>
 <style scoped>
@@ -19,7 +19,8 @@ export default {
             variable: 0
         }
     },
-    pageMessage: function (data) {
+    // 接受来自webview的参数 因为音乐插件无法在webview里调用
+    pageMessage: function ({ message: data }) {
         if (data?.module==='playSong') {
             audio.play(data.songUrl)
             const img = data.songImage
