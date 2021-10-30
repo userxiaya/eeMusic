@@ -210,7 +210,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: ["app"],
     attrs: {
       "userAgent": "EEUI_WEB",
-      "url": "http://192.168.3.7:8080/"
+      "url": "file://assets/dist/index.html"
     }
   })], 1)
 },staticRenderFns: []}
