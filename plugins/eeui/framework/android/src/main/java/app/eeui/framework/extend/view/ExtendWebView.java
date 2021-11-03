@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import androidx.core.content.FileProvider;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
@@ -84,7 +85,25 @@ public class ExtendWebView extends WebView {
         Drawable drawable = context.getResources().getDrawable(R.drawable.progress_bar_states);
         progressbar.setProgressDrawable(drawable);
         addView(progressbar);
-        setWebViewClient(new WebViewClient());
+        setWebViewClient(new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.i("shouldOverrideUrl","shouldOverrideUrlLoading");
+                view.loadUrl(url);
+                return true;
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+            }
+        });
         setDownloadListener(new DownloadListener());
         setWebChromeClient(mWebChromeClient);
         initSetting();
@@ -117,9 +136,10 @@ public class ExtendWebView extends WebView {
         //允许ajax跨域
         webSettings.setAllowUniversalAccessFromFileURLs(true);
         //设置UA
-        this.userAgent = webSettings.getUserAgentString() + ";android_kuaifan_eeui/" + eeuiCommon.getLocalVersionName(getContext());
+        this.userAgent = webSettings.getUserAgentString() + ";android_kuaifan_eeui/EEUI_WEB/" + eeuiCommon.getLocalVersionName(getContext());
         setUserAgent("");
     }
+
 
     private class DownloadListener implements android.webkit.DownloadListener {
 
@@ -136,6 +156,7 @@ public class ExtendWebView extends WebView {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            Log.i("shouldOverri", "");
             super.onPageStarted(view, url, favicon);
             if (mStatusCall != null) {
                 mStatusCall.onStatusChanged(view, "start");
@@ -144,6 +165,7 @@ public class ExtendWebView extends WebView {
 
         @Override
         public void onPageFinished(WebView view, String url) {
+            Log.i("shouldOverri", "");
             super.onPageFinished(view, url);
             if (mStatusCall != null) {
                 mStatusCall.onStatusChanged(view, "success");
@@ -152,26 +174,28 @@ public class ExtendWebView extends WebView {
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            Log.i("shouldOverri", "");
             super.onReceivedError(view, errorCode, description, failingUrl);
             if (mStatusCall != null) {
                 mStatusCall.onErrorChanged(view, errorCode, description, failingUrl);
             }
         }
 
-        @SuppressLint("NewApi")
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            String url = String.valueOf(request.getUrl());
-            if (url.isEmpty()) {
-                return true;
-            }
-            if (!url.startsWith("http") && !url.startsWith("HTTP")) {
-                return true;
-            }
-            if (mStatusCall != null) {
-                mStatusCall.onUrlChanged(view, url);
-            }
-            view.loadUrl(url);
+            Log.i("shouldOverri", "");
+//            String url = String.valueOf(request.getUrl());
+//            if (url.isEmpty()) {
+//                return true;
+//            }
+//            if (!url.startsWith("http") && !url.startsWith("HTTP")) {
+//                return true;
+//            }
+//            if (mStatusCall != null) {
+//                mStatusCall.onUrlChanged(view, url);
+//            }
+//            view.loadUrl(url);
             return true;
         }
     }
@@ -273,6 +297,7 @@ public class ExtendWebView extends WebView {
         }
     }
 
+
     @Override
     public void loadUrl(String url) {
         if (url.startsWith("file://assets/")) {
@@ -280,10 +305,7 @@ public class ExtendWebView extends WebView {
         }else if (url.startsWith("file:///assets/")) {
             url = "file:///android_asset/" + url.substring(15);
         }
-        Map<String,String> extraHeaders = new HashMap<String,String>();
-        extraHeaders.put("Referer","https://y.qq.com/");
-        extraHeaders.put("origin","https://y.qq.com/");
-        super.loadUrl(url, extraHeaders);
+        super.loadUrl(url);
     }
 
     /**

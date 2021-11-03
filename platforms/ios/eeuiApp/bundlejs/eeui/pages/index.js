@@ -209,7 +209,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', [_c('web-view', {
     staticClass: ["app"],
     attrs: {
-      "userAgent": "EEUI_WEB",
       "url": "file://assets/dist/index.html"
     }
   })], 1)
