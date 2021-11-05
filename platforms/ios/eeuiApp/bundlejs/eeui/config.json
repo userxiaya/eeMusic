@@ -66,7 +66,7 @@
 			"appid": "1110117645"
 		}
 	},
-	"socketHost": "192.168.3.7",
+	"socketHost": "172.21.14.81",
 	"socketPort": 8880,
-	"socketHome": "http://192.168.3.7:9990/pages/index.js"
+	"socketHome": "http://172.21.14.81:9990/pages/index.js"
 }

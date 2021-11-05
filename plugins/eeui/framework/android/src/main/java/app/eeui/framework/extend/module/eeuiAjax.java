@@ -2,6 +2,7 @@ package app.eeui.framework.extend.module;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSONObject;
 import com.taobao.weex.bridge.JSCallback;
@@ -120,6 +121,7 @@ public class eeuiAjax {
                     ret.put("code", data.getCode());
                     ret.put("headers", data.getHeaders());
                     ret.put("result", dataType.equals("json") ? eeuiJson.parseAjax(data.getBody()) : data.getBody());
+                    Log.e("ajaxSuccess", url);
                     callback.invokeAndKeepAlive(ret);
                 }
             }

@@ -1,7 +1,7 @@
 <template>
     <div>
         <web-view url="file://assets/dist/index.html" class="app"> </web-view>
-        <!-- <web-view url="http://192.168.3.7:8080/" class="app"> </web-view> -->
+        <!-- <web-view url="http://172.21.14.81:8080/" class="app"> </web-view> -->
     </div>
 </template>
 <style scoped>

@@ -228,7 +228,7 @@ public class JsCallJava {
             insertResult = String.valueOf(result);
         }
         String resString = String.format(RETURN_RESULT_FORMAT, stateCode, insertResult);
-        Log.d(TAG, mInjectedName + " call json: " + reqJson + " result:" + resString);
+        // Log.d(TAG, mInjectedName + " call json: " + reqJson + " result:" + resString);
         return resString;
     }
 }
