@@ -181,33 +181,6 @@ public class ExtendWebView extends WebView {
             view.loadUrl(url);
             return true;
         }
-
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        @Nullable
-        @Override
-        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-            if (request.getMethod().equalsIgnoreCase("post")){
-                URL url= null;
-                try {
-                    url = new URL(request.getUrl().toString());
-                    HttpURLConnection connection= (HttpURLConnection) url.openConnection();
-                    connection.setDoInput(true);
-                    connection.setDoOutput(true);
-                    connection.setUseCaches(false);
-                    connection.setRequestMethod(request.getMethod());
-                    Map requestHeaders = request.getRequestHeaders();
-                    connection.setRequestProperty("Charsert", "UTF-8");
-                    connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");//设置参数类型是json格式
-
-//                    return new WebResourceResponse("text/html", connection.getContentEncoding(), connection.getInputStream());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return super.shouldInterceptRequest(view,request);
-
-        }
     }
 
     private class WebChromeClient extends InjectedChromeClient {

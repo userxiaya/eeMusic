@@ -209,7 +209,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', [_c('web-view', {
     staticClass: ["app"],
     attrs: {
-      "url": "file://assets/dist/index.html"
+      "url": "http://192.168.3.7:8080/"
     }
   })], 1)
 },staticRenderFns: []}

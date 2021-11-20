@@ -2,8 +2,10 @@ include ':app'
 
 
 
+
 include ":eeui"
 project (':eeui').projectDir = new File("../../../plugins/eeui/framework/android")
+
 
 
 
@@ -12,12 +14,15 @@ project (':weex_sdk').projectDir = new File("../../../plugins/eeui/WeexSDK/andro
 
 
 
+
 include ":eeuiAudio"
 project (":eeuiAudio").projectDir = new File("../../../plugins/eeui/audio/android")
 
 
+
 include ":eeuiDemo"
 project (":eeuiDemo").projectDir = new File("../../../plugins/eeui/demo/android")
+
 
 include ":eeboxTools"
 project (":eeboxTools").projectDir = new File("../../../plugins/eebox/tools/android")
