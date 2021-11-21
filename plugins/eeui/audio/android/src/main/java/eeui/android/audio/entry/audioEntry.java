@@ -8,7 +8,6 @@ import com.taobao.weex.common.WXException;
 import app.eeui.framework.extend.annotation.ModuleEntry;
 import app.eeui.framework.extend.bean.WebCallBean;
 import eeui.android.audio.module.WeexaudioModule;
-import eeui.android.audio.module.audioWebModule;
 
 @ModuleEntry
 public class audioEntry {
@@ -18,13 +17,11 @@ public class audioEntry {
      * @param content Application
      */
     public void init(Context content) {
-
         try {
             WXSDKEngine.registerModule("eeuiAudio", WeexaudioModule.class);
         } catch (WXException e) {
             e.printStackTrace();
         }
-        WebCallBean.addClassData("eeuiAudio", audioWebModule.class);
     }
 
 }

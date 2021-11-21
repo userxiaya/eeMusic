@@ -161,6 +161,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 var audio = app.requireModule("eeuiAudio");
 var navigator = app.requireModule('navigator');
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -169,14 +174,24 @@ var navigator = app.requireModule('navigator');
       variable: 0
     };
   },
-  // 接受来自webview的参数 因为音乐插件无法在webview里调用
-  pageMessage: function pageMessage(_ref) {
-    var data = _ref.message;
+  created: function created() {
+    var _this = this;
 
-    if ((data === null || data === void 0 ? void 0 : data.module) === 'playSong') {
-      audio.play(data.songUrl);
-      var img = data.songImage;
-      audio.notifyMusic(data.songname, data.singer, img);
+    audio.setCallback(function (result) {
+      var calljs = "if(!!audioCallBack){audioCallBack(".concat(JSON.stringify(result), ")}");
+
+      _this.$refs.web.setJavaScript(calljs);
+    });
+  },
+  methods: {
+    receiveMessage: function receiveMessage(_ref) {
+      var data = _ref.message;
+      var singerName = data.singer.map(function (e) {
+        return e.name;
+      }).join('/');
+      data.singerName = singerName; //播放
+
+      audio.play(data);
     }
   }
 });
@@ -207,9 +222,13 @@ module.exports = {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('web-view', {
+    ref: "web",
     staticClass: ["app"],
     attrs: {
-      "url": "http://192.168.3.7:8080/"
+      "url": "file://assets/dist/index.html"
+    },
+    on: {
+      "receiveMessage": _vm.receiveMessage
     }
   })], 1)
 },staticRenderFns: []}

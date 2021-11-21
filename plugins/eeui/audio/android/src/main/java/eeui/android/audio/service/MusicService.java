@@ -1,33 +1,18 @@
 package eeui.android.audio.service;
-
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
-
-import androidx.core.app.NotificationCompat;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.Timer;
 import java.util.TimerTask;
-
 import app.eeui.framework.ui.eeui;
-import eeui.android.audio.R;
 import eeui.android.audio.event.AudioEvent;
-import eeui.android.audio.module.WeexaudioModule;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
+import eeui.android.audio.event.musicNotifyManager;
+import com.alibaba.fastjson.JSONObject;
 
 @SuppressLint({"HandlerLeak", "StaticFieldLeak"})
 public class MusicService {
@@ -37,6 +22,8 @@ public class MusicService {
     private static Boolean isError = false;
     private static MediaPlayer mPlayer = null;
     private static MusicService service;
+    private static JSONObject song;
+    musicNotifyManager noti = new musicNotifyManager();
 
 
     private class PlayAsyncTask extends AsyncTask<String, Integer, String> {
@@ -47,11 +34,20 @@ public class MusicService {
             statTimer();
             try {
                 mPlayer.start();
+                notifyMusic();
             }catch (Exception e) {
                 e.printStackTrace();
             }
             eventPost(url, AudioEvent.STATE_STARTPLAY);
             return null;
+        }
+    }
+    private void notifyMusic () {
+        if (song != null) {
+            String songName = song.get("name").toString();
+            String artistName = song.get("singerName").toString();
+            String albumImg = song.get("albumImg").toString();
+            noti.notifyMusic(songName, artistName, albumImg);
         }
     }
 
@@ -100,7 +96,8 @@ public class MusicService {
         new PlayAsyncTask().execute(url);
     }
 
-    public boolean playNext(String url) {
+    public boolean playNext(String url, JSONObject songObj) {
+        song = songObj;
         if (mPlayer == null) {
             return false;
         }
@@ -113,12 +110,13 @@ public class MusicService {
             if (url.startsWith("file://assets/")) {
                 AssetFileDescriptor assetFile = eeui.getApplication().getAssets().openFd(url.substring(14));
                 mPlayer.setDataSource(assetFile.getFileDescriptor(), assetFile.getStartOffset(), assetFile.getLength());
-            }else{
+            } else {
                 mPlayer.setDataSource(url);
             }
             mPlayer.prepare();
             statTimer();
             mPlayer.start();
+            notifyMusic();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -276,6 +274,7 @@ public class MusicService {
             e.printStackTrace();
         }
     }
+
 
     public void cancelTimer() {
         if (timer != null)
